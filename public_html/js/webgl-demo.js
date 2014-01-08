@@ -216,8 +216,8 @@ function initBuffers() {
 function initTextures() {
   cubeTexture = gl.createTexture();
   cubeImage = new Image();
-  cubeImage.onload = function() { handleTextureLoaded(cubeImage, cubeTexture); }
-  cubeImage.src = "cubetexture.png";
+  cubeImage.onload = function() { handleTextureLoaded(cubeImage, cubeTexture); };
+  cubeImage.src = "https://rawgithub.com/dlknowles/CanvasApps/master/public_html/cubetexture.png"; // "cubetexture.png";
 }
 
 function handleTextureLoaded(image, texture) {
