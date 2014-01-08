@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>CanvasApps - Particle Fountain</title>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge;chrome=1" />
+
+        <link rel="stylesheet" href="css/bootstrap.min.css" />
+        <link rel="stylesheet" href="css/main.css" />
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+          <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.html">CanvasApps</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="index.html">Home</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Demos <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="particlefountain.html">Particle Fountain</a></li>
+                                <li><a href="gravity.html">Gravity</a></li>
+                                <li><a href="particle.html">Particles</a></li>
+                                <li><a href="water.html">Water Spout</a></li>
+                                <li><a href="webgl.html">WebGL Test</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+        </div>
+
+        <div class="container">
+            <canvas width="240" height="66" id="testCanvas">
+                Your browser does not support canvas.
+            </canvas>
+
+        </div>
+        <script src="http://code.createjs.com/easeljs-0.5.0.min.js"></script>
+        <script>
+            var stage,
+                    time = Date.now(),
+                    emitter = {
+                        x: window.innerWidth / 2,
+                        y: window.innerHeight / 2,
+                        size: 3
+                    };
+
+            function init() {
+                canvas = document.getElementById('testCanvas');
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+
+                stage = new createjs.Stage(canvas);
+
+                createjs.Ticker.setFPS(60);
+                createjs.Ticker.addListener(window);
+            }
+
+            function createCircle() {
+                var graphics = new createjs.Graphics();
+                //graphics.beginStroke(createjs.Graphics.getRGB(getRandomColorValue(),getRandomColorValue(),getRandomColorValue()));
+                graphics.beginFill(createjs.Graphics.getRGB(getRandomColorValue(), getRandomColorValue(), getRandomColorValue()));
+                graphics.drawCircle(0, 0, emitter.size * Math.random());
+
+                var circle = new createjs.Shape(graphics);
+                circle.x = emitter.x;
+                circle.y = emitter.y;
+                circle.speedX = -2 + Math.random() * 4;
+                circle.speedY = -225;
+                circle.time = 0;
+
+                stage.addChild(circle);
+            }
+
+            function getRandomColorValue() {
+                return Math.floor(Math.random() * 256);
+            }
+
+            function tick() {
+                var now = Date.now(),
+                        elapsed = now - time;
+
+                time = now;
+
+                createCircle();
+                createCircle();
+                createCircle();
+                createCircle();
+
+                for (var i = 0; i < stage.getNumChildren(); ++i) {
+                    var circle = stage.getChildAt(i);
+
+                    circle.time += elapsed / 1000;
+                    circle.x += circle.speedX * 1 / (circle.time + 1);
+                    circle.y = emitter.y + circle.speedY * circle.time + 50 * (circle.time * circle.time);
+
+                    if (circle.y > window.innerHeight + emitter.size) {
+                        stage.removeChildAt(i);
+                        --i;
+                    }
+                }
+
+                stage.update();
+            }
+
+            init();
+            //setup();
+        </script>
+
+        <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+    </body>
+</html>
